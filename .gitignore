@@ -1,0 +1,39 @@
+# ---- 全部無視 ----
+*
+!.gitignore
+!README.md
+!.env.example  # ルート直下に置く場合の保険
+
+# ---- Section6 の3フォルダを"フォルダ自体"→"配下すべて"の順で再許可 ----
+!/section6-1-6-5_Back/
+!/section6-1-6-5_Back/**
+
+!/section6-1-6-5_Front/
+!/section6-1-6-5_Front/**
+
+!/docs/
+!/docs/**
+
+# ---- Front の生成物・秘密は改めて無視 ----
+section6-1-6-5_Front/.next/
+section6-1-6-5_Front/out/
+section6-1-6-5_Front/dist/
+section6-1-6-5_Front/node_modules/
+section6-1-6-5_Front/coverage/
+section6-1-6-5_Front/playwright-report/
+section6-1-6-5_Front/.env
+section6-1-6-5_Front/.env.local
+section6-1-6-5_Front/.env.*.local
+
+# ---- Back の生成物・秘密 ----
+section6-1-6-5_Back/dist/
+section6-1-6-5_Back/coverage/
+section6-1-6-5_Back/node_modules/
+section6-1-6-5_Back/.env
+
+# ---- 共通 ----
+**/.DS_Store
+**/Thumbs.db
+**/*.log
+**/__pycache__/
+**/.pytest_cache/

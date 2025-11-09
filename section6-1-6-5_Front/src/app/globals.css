@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== 全体のデフォルトスタイル ===== */
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  background-color: #f9fafb; /* Tailwind の gray-50 相当 */
+  color: #111827; /* Tailwind の gray-900 相当 */
+}
+
+/* リンク */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 全体のボックスサイズを border-box に統一 */
+* {
+  box-sizing: border-box;
+}
+
+/* ===== 共通ボタンスタイル ===== */
+.btn {
+  @apply px-4 py-2 rounded font-medium transition-colors shadow-sm;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700
+         disabled:bg-blue-300 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300
+         disabled:bg-gray-200/70 disabled:text-gray-500;
+}
+
+/* ===== 入力フィールド ===== */
+.input {
+  @apply w-full border rounded px-3 py-2
+         focus:outline-none focus:ring-2 focus:ring-blue-500
+         placeholder:text-gray-400;
+}
+
+/* ===== カードレイアウト ===== */
+.card {
+  @apply bg-white rounded-2xl shadow p-6;
+}
+
+/* ===== セクションタイトル ===== */
+.section-title {
+  @apply text-xl font-semibold mb-4;
+}
+
+/* ===== ナビゲーションリンク ===== */
+.navlink {
+  @apply inline-flex items-center rounded-lg px-3 py-2 font-medium text-gray-700
+         hover:text-blue-700 hover:bg-blue-50
+         focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/60
+         transition-colors;
+}
+
+/* ===== バッジ ===== */
+.badge {
+  @apply inline-block text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-700;
+}
+
+/* ===== テーブル ===== */
+.table {
+  @apply min-w-[880px] w-full border-collapse;
+}
+.table th {
+  @apply text-left p-2 border-b;
+}
+.table td {
+  @apply p-2 border-b align-top;
+}
+
+/* ===== フォーカス視認性の強化 ===== */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+.btn:focus-visible,
+.navlink:focus-visible,
+.input:focus-visible {
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.6);
+  border-color: #93c5fd;
+}
+
+/* ===== Micro-interactions (motion-safe) ===== */
+@keyframes slide-in-up {
+  from {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.ani-enter {
+  animation: slide-in-up 160ms ease both;
+}
+
+.card {
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.btn {
+  transition: transform 120ms ease, box-shadow 120ms ease,
+    background-color 120ms ease, color 120ms ease;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* ===== ダークモード対応 ===== */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #181818;
+    color: #eaeaea;
+  }
+  .card {
+    background-color: #2a2a2a;
+    border-color: #444;
+  }
+  .navlink {
+    color: #aaa;
+  }
+  .navlink:hover {
+    color: #fff;
+  }
+}
+
+/* ===== レスポンシブデザイン ===== */
+@media (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+  .card {
+    padding: 1rem;
+  }
+  .navlink {
+    font-size: 0.875rem;
+  }
+}
+
+/* ===== インディケーター（スピナー） ===== */
+.spinner {
+  border: 4px solid transparent;
+  border-top: 4px solid #4f6bff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* === ここから：サイト全体の背景と可読オーバーレイ === */
+:root {
+  --bg-overlay: 0.62;
+} /* 0.50〜0.72で濃さ調整 */
+
+html,
+body {
+  min-height: 100%;
+}
+
+/* 背景画像と白いベールを重ねる */
+body {
+  background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, var(--bg-overlay)),
+      rgba(255, 255, 255, var(--bg-overlay))
+    ),
+    url("/assets/bg-hero.png");
+  background-position: center top, center top;
+  background-size: auto, cover;
+  background-repeat: no-repeat, no-repeat;
+  background-attachment: fixed, fixed;
+}
+
+/* iOS Safari で fixed が重い場合のフォールバック */
+@supports (-webkit-touch-callout: none) {
+  body {
+    background-attachment: scroll, scroll;
+  }
+}
+
+/* 見出し（必要なら使える） */
+.page-title {
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  font-size: clamp(28px, 6vw, 56px);
+  color: #0f172a;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7), 0 10px 30px rgba(0, 0, 0, 0.12);
+  margin-top: clamp(16px, 4vw, 24px);
+  margin-bottom: 16px;
+}
+
+/* ロゴ（下の隙間はゼロ） */
+.site-logo {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(8px, 2vw, 16px);
+  margin-bottom: 0; /* ←ここを 0 にして隙間なし */
+}
+.site-logo img {
+  width: clamp(220px, 48vw, 560px);
+  height: auto;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.25));
+  opacity: 0.95;
+}
+/* === ここまで === */

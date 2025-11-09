@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // マイグレーション用
+}
+
+model Image {
+  id          Int      @id @default(autoincrement())
+  filename    String
+  contentType String
+  data        Bytes
+  size        Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Profile の avatar と対になる片側（同じリレーション名で結ぶ）
+  profile Profile? @relation("AvatarImage")
+
+  // Project.image の逆側
+  projects Project[]
+}
+
+model Profile {
+  id   Int    @id @default(autoincrement())
+  name String
+  bio  String
+
+  avatarId Int?   @unique
+  avatar   Image? @relation("AvatarImage", fields: [avatarId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Skill {
+  id        Int      @id @default(autoincrement())
+  name      String
+  level     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String
+  url         String?
+
+  imageId Int?
+  image   Image? @relation(fields: [imageId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ContactStatus {
+  NEW
+  DONE
+}
+
+model ContactMessage {
+  id        Int            @id @default(autoincrement())
+  name      String
+  email     String
+  message   String
+  status    ContactStatus  @default(NEW)
+  createdAt DateTime       @default(now())
+}
